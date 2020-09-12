@@ -9,7 +9,8 @@ namespace FSDHAssignment1.Model
         public int Amount { get; set; }
         public int CurrentCount { get; set; }
         public DateTime StockDate { get; set; }
-        public virtual int ProductID { get; set; }
-        public RetailProduct Product { get; set; }
+        [ForeignKey("RetailProduct")]
+        public int ProductID { get; set; }
+        public virtual RetailProduct Product { get; set; }
     }
 }
