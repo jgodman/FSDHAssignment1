@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FHSDAssignment1.IData\FHSDAssignment1.IData.csproj" />
+    <ProjectReference Include="..\FSDHAssignment1.Model\FSDHAssignment1.Model.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using FDSHAssignment1.Data.SQL;
+using FHSDAssignment1.IData;
+using FSDHAssignment1.Data.StaticRepository;
+using FSDHAssignment1.Logic;
+using FSDHAssignment1.Model;
 using FSDHAssignment1.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace FSDHAssignment1.Controllers
 {
@@ -12,6 +13,13 @@ namespace FSDHAssignment1.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
+        private readonly bool IsStaticRepo;
+        public ProductController(IConfiguration configuration)
+        {
+            if (configuration["DataSourceType"] == "StaticRepository")
+                IsStaticRepo = true;
+        }
+
         [Route("api/Product/Add")]
         [HttpPost]
         public APIBaseResponse AddProduct([FromBody]ProductRequest request)
@@ -34,8 +42,24 @@ namespace FSDHAssignment1.Controllers
                 };
             }
 
+            IRepository<RetailProduct> productRepo = null;
 
-            return null;
+            if (IsStaticRepo)
+            {
+                productRepo = new StaticRepository<RetailProduct>();
+            }
+            else
+            {
+                productRepo = new SQLRepository<RetailProduct>();
+            }
+
+            var products = ProcessRequest.GetProducts(productRepo, "select * from RetailProduct");
+
+            return new APIBaseResponse
+            {
+                IsSuccessful = true,
+                Data = products
+            };
         }
 
 
